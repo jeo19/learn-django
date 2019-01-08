@@ -1,0 +1,5 @@
+django
+pytz
+django-tagging
+django-disqus
+pillow
