@@ -42,3 +42,17 @@ It's the training Django
 - print(django.VERSION)
 - print(django.get_version())
 ```
+
+#### 4. How to install the postgreSQL on Django
+
+> postgreSQL installer execute
+
+```sh
+
+```
+
+> Install the psycopg2 package
+
+```sh
+pip install psycopg2
+```
