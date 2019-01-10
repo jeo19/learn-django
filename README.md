@@ -43,7 +43,14 @@ It's the training Django
 - print(django.get_version())
 ```
 
-#### 4. How to install the postgreSQL on Django
+#### 4. Start the project of Django
+
+```sh
+(myvenv) [The directory that venv installed /Scripts]> django-admin.py startproject [mysite] .
+(myvenv) [The directory that venv installed]> python manage.py runserver
+```
+
+#### 5. How to use the postgreSQL on Django
 
 > postgreSQL installer execute
 
@@ -55,4 +62,15 @@ It's the training Django
 
 ```sh
 pip install psycopg2
+```
+
+> Add the DATABASE and USER, PASSWORD
+
+```sh
+CREATE DATABASE django_test;
+CREATE USER django_user WITH PASSWORD 'django_pass';
+ALTER ROLE django_user SET client_encoding TO 'utf8';
+ALTER ROLE django_user SET default_transaction_isolation TO 'read committed';
+ALTER ROLE django_user SET timezone TO 'UTC';
+GRANT ALL PRIVILEGES ON DATABASE django_test TO django_user;
 ```
