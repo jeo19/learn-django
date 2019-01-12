@@ -130,11 +130,68 @@ Running migrations:
    then excute 'python manage.py runserver' on commandline  
    http://127.0.0.1:8000/admin/ connect in the browser.
 2. Should create superuser.
+
    ```sh
    (myvenv) ~/djangogirls$ python manage.py createsuperuser
    Username: admin
    Email address: admin@admin.com
-   Password:
+   Password:root1234
    Password (again):
    Superuser created successfully.
    ```
+
+> ### ☰ The Django ORM and QuerySets
+
+#### - Django shell
+
+```sh
+(myvenv) ~/learn-django>$ python manage.py shell
+```
+
+#### - Inquire all objects
+
+```python
+from blog.models import Post
+Post.objects.all()
+```
+
+#### - Creates an Object
+
+```python
+Post.objects.create(author=username, title='Sample title', text='Test')
+```
+
+#### - Inquire User Object and username sets the value
+
+```python
+from django.contrib.auth.models import User
+User.objects.all()
+username=User.objects.get(username='[username]')
+```
+
+#### - Filtering the list of Post
+
+> ##### ☑︎ Case the author is inquire
+
+```python
+Post.objects.filter(author=me)
+```
+
+> ##### ☑︎ If you only inquires posts whose titles are "sample" in the post list
+
+```python
+Post.objects.filter(title__contains='sample')
+```
+
+> ##### ☑︎ Ordering QuerySet
+
+```python
+Post.objects.order_by('created_date')
+Post.objects.order_by('-created_date') ### orderby desc
+```
+
+> ##### ☑︎ Joining QuerySet
+
+```python
+Post.objects.filter(title__contains='sample').order_by('published_date')
+```
