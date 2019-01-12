@@ -195,3 +195,76 @@ Post.objects.order_by('-created_date') ### orderby desc
 ```python
 Post.objects.filter(title__contains='sample').order_by('published_date')
 ```
+
+> ### ☰ The Django Templates
+
+#### - Add python code in the 'blog/templates/blog/post_list.html'
+
+```python
+<div>
+    <h1><a href="/">Django Girls Blog</a></h1>
+</div>
+
+{% for post in posts %}
+    <div>
+        <p>published: {{ post.published_date }}</p>
+        <h1><a href="">{{ post.title }}</a></h1>
+        <p>{{ post.text|linebreaksbr }}</p>
+    </div>
+{% endfor %}
+```
+
+> ### ☰ Apply a css on the templates
+
+#### - The Static file
+
+<code>
+The static file is includes a css and image file etc <br> 
+> Create a static directory<br>
+</code>
+<pre>
+  djangogirls
+    ├── blog
+    │   ├── migrations
+    │   ├── static
+    │   └── templates
+    └── conf
+</pre>
+<code>
+> First the css file
+</code>
+<pre>
+    learn-django
+    └─── blog
+         └─── static
+              └─── css
+                   └─── blog.css
+</pre>
+<code>
+> Add the code in post_list.html below
+</code>
+
+```python
+{% load static %}
+<html>
+    <head>
+        <title>Django Girls blog</title>
+        <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+        <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
+        <link rel="stylesheet" href="{% static 'css/blog.css' %}">
+    </head>
+    <body>
+        <div>
+            <h1><a href="/">Django Girls Blog</a></h1>
+        </div>
+
+        {% for post in posts %}
+            <div>
+                <p>published: {{ post.published_date }}</p>
+                <h1><a href="">{{ post.title }}</a></h1>
+                <p>{{ post.text|linebreaksbr }}</p>
+            </div>
+        {% endfor %}
+    </body>
+</html>
+```
