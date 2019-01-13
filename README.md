@@ -268,3 +268,51 @@ The static file is includes a css and image file etc <br>
     </body>
 </html>
 ```
+
+> ### ☰ Extends of the Templates on Django
+
+<code>- Create a basic template (base.html)</code>
+
+<pre>
+blog
+└───templates
+    └───blog
+            base.html
+            post_list.html
+</pre>
+
+<code>- blog/templates/blog/base.html</code>
+
+```python
+<body>
+    <div class="page-header">
+        <h1><a href="/">Django Girls Blog</a></h1>
+    </div>
+    <div class="content container">
+        <div class="row">
+            <div class="col-md-8">
+            {% block content %}
+            {% endblock %}
+            </div>
+        </div>
+    </div>
+</body>
+```
+
+<code>- Change a code from the 'blog/templates/blog/post_list.html'</code>
+
+```python
+{% extends 'blog/base.html' %}
+
+{% block content %}
+    {% for post in posts %}
+        <div class="post">
+            <div class="date">
+                {{ post.published_date }}
+            </div>
+            <h1><a href="">{{ post.title }}</a></h1>
+            <p>{{ post.text|linebreaksbr }}</p>
+        </div>
+    {% endfor %}
+{% endblock %}
+```
