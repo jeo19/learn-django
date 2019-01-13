@@ -316,3 +316,67 @@ blog
     {% endfor %}
 {% endblock %}
 ```
+
+> ### ☰ Extends of the App on Django
+
+<code>- Create a link of template on Post model (blog/templates/blog/post_list.html)</code>
+
+```python
+{% extends 'blog/base.html' %}
+
+{% block content %}
+    {% for post in posts %}
+        <div class="post">
+            <div class="date">
+                {{ post.published_date }}
+            </div>
+            <h1><a href="{% url 'post_detail' pk=post.pk %}">{{ post.title }}</a></h1>
+            <p>{{ post.text|linebreaksbr }}</p>
+        </div>
+    {% endfor %}
+{% endblock %}
+```
+
+<code>- Create the detail url on Post model</code>
+
+<code>blog/urls.py</code>
+
+```python
+from django.urls import path
+from . import views
+urlpatterns = [
+    path('', views.post_list, name="post_list"),
+    path('post/<int:pk>/', views.post_detail, name='post_detail'),
+]
+```
+
+<code>- Add a 404 pages (blog/views.py)</code>
+
+```python
+from django.shortcuts import render, get_object_or_404
+
+```
+
+<code>- Add the view as post_detail</code>
+
+```python
+def post_detail(request, pk):
+    post = get_object_or_404(Post, pk=pk)
+    return render(request, 'blog/post_detail.html', {'post': post})
+```
+
+<code>- Create a template for the post details </br> We will create a file in blog/templates/blog called post_detail.html, and open it in the code editor.</code>
+
+<code>blog/templates/blog/post_detail.html</code>
+
+```python
+{% extends 'blog/base.html' %} {% block content %}
+<div class="post">
+  {% if post.published_date %}
+  <div class="date">{{ post.published_date }}</div>
+  {% endif %}
+  <h2>{{ post.title }}</h2>
+  <p>{{ post.text | linebreaksbr }}</p>
+</div>
+{% endblock %}
+```
