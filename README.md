@@ -380,3 +380,170 @@ def post_detail(request, pk):
 </div>
 {% endblock %}
 ```
+
+> ### ☰ Django Forms
+
+<code> We need to create a file with this name in the blog directory.</code>
+
+<pre>
+blog
+   └── forms.py
+</pre>
+
+<code>Ok! Let's open it in the code editor and type the following code</code>
+
+<code>blog/forms.py</code>
+
+```python
+from django import forms
+
+from .models import Post
+
+class PostForm(forms.ModelForm):
+
+    class Meta:
+        model = Post
+        fields = ('title', 'text',)
+```
+
+<code>It's time to open blog/templates/blog/base.html in the code editor,We will add a link in div named page-header</code>
+
+```python
+<a href="{% url 'post_new' %}" class="top-menu"><span class="glyphicon glyphicon-plus"></span></a>
+```
+
+<code>We open blog/urls.py in the code editor, add a line</code>
+
+<code>blog/urls.py</code>
+
+```python
+path('post/new/',views.post_new, name="post_new"),
+```
+
+<code>Add new view named post_new</code>
+
+<code>blog/views.py</code>
+
+```python
+from .forms import PostForm
+```
+
+<code>and then add post_new</code>
+
+```python
+def post_new(request):
+    form = PostForm()
+    return render(request, 'blog/post_edit.html', {'form': form})
+```
+
+<code>Create the new template</code>
+
+<code>blog/templates/blog/blog_edit.html</code>
+
+<code>Let's open the blog_edit.html, then add the following code</code>
+
+```python
+{% extends 'blog/base.html' %}
+
+{% block content %}
+    <h2>New post</h2>
+    <form method="POST" class="post-form">{% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="save btn btn-default">Save</button>
+    </form>
+{% endblock %}
+```
+
+> ### ☰ Saving the form
+
+<code>- Add the following code in the blog/views.py </code>
+
+```python
+from django.shortcuts import redirect
+```
+
+<code>and then We need to change blog/views.py like this</code>
+
+```python
+def post_new(request):
+    if request.method == "POST":
+        form = PostForm(request.POST)
+        if form.is_valid():
+            post = form.save(commit=False)
+            post.author = request.user
+            post.published_date = timezone.now()
+            post.save()
+            return redirect('post_detail', pk=post.pk)
+    else:
+        form = PostForm()
+    return render(request, 'blog/post_edit.html', {'form': form})
+```
+
+> ### ☰ Edit form
+
+<code>Open blog/templates/blog/post_detail.html in the code editor and add the line</code>
+
+```python
+<a class="btn btn-default" href="{% url 'post_edit' pk=post.pk %}"><span class="glyphicon glyphicon-pencil"></span></a>
+```
+
+<code>So that the template will look like this</code>
+
+```python
+{% extends 'blog/base.html' %}
+
+{% block content %}
+    <div class="post">
+        {% if post.published_date %}
+            <div class="date">
+                {{ post.published_date }}
+            </div>
+        {% endif %}
+        <a class="btn btn-default" href="{% url 'post_edit' pk=post.pk %}"><span class="glyphicon glyphicon-pencil"></span></a>
+        <h2>{{ post.title }}</h2>
+        <p>{{ post.text|linebreaksbr }}</p>
+    </div>
+{% endblock %}
+```
+
+<code>Open blog/urls.py in the code editor, and add this line:</code>
+
+```python
+path('post/<int:pk>/edit/', views.post_edit, name='post_edit'),
+```
+
+<code>and then, We need to add the following code in blog/views.py</code>
+
+```python
+def post_edit(request, pk):
+    post = get_object_or_404(Post, pk=pk)
+    if request.method == "POST":
+        form = PostForm(request.POST, instance=post)
+        if form.is_valid():
+            post = form.save(commit=False)
+            post.author = request.user
+            post.published_date = timezone.now()
+            post.save()
+            return redirect('post_detail', pk=post.pk)
+    else:
+        form = PostForm(instance=post)
+    return render(request, 'blog/post_edit.html', {'form': form})
+```
+
+> 📌 Security for the input or change authentication of post's
+
+<code>Open blog/templates/blog/base.html in the code editor and change like this:</code>
+
+```python
+{% if user.is_authenticated %}
+    <a href="{% url 'post_new' %}" class="top-menu"><span class="glyphicon glyphicon-plus"></span></a>
+{% endif %}
+```
+
+<code>and open blog/templates/blog/blog_detail.html and change like the following code</code>
+
+```python
+{% if user.is_authenticated %}
+     <a class="btn btn-default" href="{% url 'post_edit' pk=post.pk %}"><span class="glyphicon glyphicon-pencil"></span></a>
+{% endif %}
+```
