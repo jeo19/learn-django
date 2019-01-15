@@ -1,7 +1,7 @@
 {
-  "python.pythonPath": "E:/WorkSpace/Python/work/learn-django/Scripts/python",
-  "python.linting.pep8Enabled": false,
-  "python.linting.pylintPath": "E:/WorkSpace/Python/work/learn-django/Scripts/pylint",
+  "python.pythonPath": "E:\\WorkSpace\\Python\\work\\learn-django\\Scripts\\python.exe",
+  "python.linting.pep8Enabled": true,
+  "python.linting.pylintPath": "E:\\WorkSpace\\Python\\work\\learn-django\\Scripts\\pylint.exe",
   "python.linting.pylintArgs": ["--load-plugins", "pylint_django"],
   "python.linting.pylintEnabled": true,
   "editor.rulers": [80, 120],
