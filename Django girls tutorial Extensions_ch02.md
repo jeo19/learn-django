@@ -20,6 +20,8 @@ class Comment(models.Model):
         return self.text
 ```
 
+The related_name option in models.ForeignKey allows us to have access to comments from within the Post model.
+
 > ### Create tables for models in your database
 
 We have to tell Django that we made changes to our model. Type python manage.py makemigrations blog in your command line. You should see output like this:
